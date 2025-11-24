@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-xs-12">
+    <button class="btn btn-success" (click)="onNewMonster()">New Monster</button>
+    <button class="btn btn-success" (click)="onRandomMonster()">Random Monster</button>
+    <button class="btn btn-success" (click)="onRemoveAll()">Remove All Monsters</button>
+  </div>
+  <div class="col-xs-12">
+      <button class="btn btn-success" (click)="onUnfavoriteAll()">Unfavorite All</button>
+      <button class="btn btn-success" (click)="onCreateTeam()">Create Random Monster Team</button>
+      <button class="btn btn-success" (click)="onSort()">Sort Monsters</button>
+    </div>
+</div>
+<hr>
+<p>Number of monsters: {{ monsters.length }}</p>
+<div class="row">
+  <div class="col-xs-12">
+    <app-monster-item
+      *ngFor="let monsterEl of monsters; let i = index"
+      [monster]="monsterEl"
+      [index]="i"></app-monster-item>
+  </div>
+</div>
+

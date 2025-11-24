@@ -1,0 +1,118 @@
+[
+    {
+        "name": "Vampire",
+        "desc": "He just wants your blood.",
+        "role": "soldier"
+    },
+    {
+        "name": "Gremlin",
+        "desc": "Full of mischief.",
+        "role": "medic"
+    },
+    {
+        "name": "Davy Jones",
+        "desc": "Spirit of the sea ready to collect your soul.",
+        "role": "shield"
+    },
+    {
+        "name": "Chupacabra",
+        "desc": "Large creature that thirsts for your blood.",
+        "role": "thief"
+    },
+    {
+        "name": "Manticore",
+        "desc": "Body of a lion, head of a man, tail of a scorpion.",
+        "role": "mage"
+    },
+    {
+        "name": "Banshee",
+        "desc": "She has a deadly scream.",
+        "role": "medic"
+    },
+    {
+        "name": "Poltergeist",
+        "desc": "This ghost will haunt your home.",
+        "role": "shield"
+    },
+    {
+        "name": "Nessie",
+        "desc": "The monster of Loch Ness.",
+        "role": "mage"
+    },
+    {
+        "name": "Jersey Devil",
+        "desc": "Head of a horse, wings like a dragon.",
+        "role": "medic"
+    },
+    {
+        "name": "Headless Horseman",
+        "desc": "He lost his head and now he wants yours.",
+        "role": "soldier"
+    },
+    {
+        "name": "Zombie",
+        "desc": "These undead only follow their hunger for your flesh.",
+        "role": "thief"
+    },
+    {
+        "name": "Yeti",
+        "desc": "Hidden in the snowy mountains.",
+        "role": "shield"
+    },
+    {
+        "name": "Mummy",
+        "desc": "You were warned not to disturb their rest.",
+        "role": "medic"
+    },
+    {
+        "name": "Orc",
+        "desc": "Big, powerful, and ugly.",
+        "role": "thief"
+    },
+    {
+        "name": "Kraken",
+        "desc": "Giant sea squid with a taste for ships.",
+        "role": "soldier"
+    },
+    {
+        "name": "Golem",
+        "desc": "Human made of clay.",
+        "role": "mage"
+    },
+    {
+        "name": "Werewolf",
+        "desc": "Sometimes a man, sometimes a fearsome wolf creature.",
+        "role": "medic"
+    },
+    {
+        "name": "Cerberus",
+        "desc": "Vicious three headed dog.",
+        "role": "soldier"
+    },
+    {
+        "name": "Siren",
+        "desc": "Their song will lead you to only death.",
+        "role": "shield"
+    },
+    {
+        "name": "Succubus",
+        "desc": "She will drain the life from any man.",
+        "role": "thief"
+    },
+    {
+        "name": "Cyclops",
+        "desc": "Don't stare at his eye. It only makes him angry.",
+        "role": "soldier"
+    },
+    {
+        "name": "Fankenstein's Monster",
+        "desc": "Big and powerful. He just wants to be left alone.",
+        "role": "mage"
+    },
+    {
+        "name": "Swamp Creature",
+        "desc": "He awaits you in the swamp.",
+        "role": "shield"
+    }
+
+]

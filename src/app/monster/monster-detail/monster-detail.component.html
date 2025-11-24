@@ -1,0 +1,51 @@
+<!-- <div class="row">
+  <div class="col-xs-12">
+    <img
+      [src]="monster.imagePath"
+      alt="{{ monster.name }}"
+      class="img-responsive"
+      style="max-height: 300px;">
+  </div>
+</div> -->
+<div class="monsterDetail">
+  <div class="row">
+    <div class="col-xs-8">
+      <h1>{{ monster.name }}</h1>
+    </div>
+    <div class="col-xs-4">
+        <span class="glyphicon glyphicon-heart pull-right hearted" aria-hidden="true" *ngIf="monster.favorite"></span>
+        <span class="glyphicon ra ra-sword pull-right role" aria-hidden="true" *ngIf="monster.role === 'soldier'"></span>
+        <span class="glyphicon ra ra-health pull-right role" aria-hidden="true" *ngIf="monster.role === 'medic'"></span>
+        <span class="glyphicon ra ra-cracked-shield pull-right role" aria-hidden="true" *ngIf="monster.role === 'shield'"></span>
+        <span class="glyphicon ra ra-kunai pull-right role" aria-hidden="true" *ngIf="monster.role === 'thief'"></span>
+        <span class="glyphicon ra ra-laser-blast pull-right role" aria-hidden="true" *ngIf="monster.role === 'mage'"></span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      {{ monster.description }}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="btn-group" appDropdown>
+      <button
+        type="button"
+        class="btn btn-primary dropdown-toggle">
+        Manage Monster <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a style="cursor: pointer" (click)="onEditMonster()">Edit Monster</a></li>
+        <li><a style="cursor: pointer" (click)="onDeleteMonster()">Delete Monster</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- <div class="row">
+  <div class="col-xs-12">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let ingredient of monster.ingredients">{{ ingredient.name}} - {{ ingredient.amount }}</li>
+    </ul>
+  </div>
+</div> -->

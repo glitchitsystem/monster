@@ -1,0 +1,44 @@
+name: Deploy Website
+on:
+  push:
+    branches: [master]
+  # Allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular app
+        run: npm run build -- --configuration production
+
+      - name: Set build timestamp
+        run: echo "BUILD_TIMESTAMP=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_ENV
+
+      - name: Create version.txt
+        run: echo ${{ env.BUILD_TIMESTAMP }} > ./dist/monster-proj/version.txt
+
+      - name: Deploy to FTP (Main Site)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/monster-proj/
+          server-dir: /glitchitsystem.com/public_html/monster/
+          protocol: ftp
+          log-level: verbose
+          dangerous-clean-slate: true # This will remove old files
+          timeout: 30000
+          port: 21 # Specify default FTP port explicitly

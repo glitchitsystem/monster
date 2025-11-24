@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <!-- <input type="email" id="username" formControlName="username" class="form-control"> -->
+            <input type="email" id="username" formControlName="username" class="form-control" placeholder="example@example.com">
+            <p *ngIf="!loginForm.get('username').valid && loginForm.get('username').touched && !loginForm.get('username').dirty" 
+            class="notValid">Username is required</p>
+            <p *ngIf="!loginForm.get('username').valid && loginForm.get('username').touched && loginForm.get('username').dirty" 
+            class="notValid">Username needs to be a valid email</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="password">Password</label>
+            <!-- <input type="password" id="password" formControlName="password" class="form-control"> -->
+            <input type="password" id="password" formControlName="password" class="form-control">
+            <p *ngIf="!loginForm.get('password').valid && loginForm.get('password').touched" class="notValid">
+              Password is required</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <button class="btn btn-success" type="submit" [disabled]="!loginForm.valid">Login</button>
+          <p *ngIf="validLogin !== null && !validLogin" 
+            class="notValid">Invalid username or password</p>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
