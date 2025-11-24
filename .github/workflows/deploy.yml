@@ -38,7 +38,7 @@ jobs:
           local-dir: ./dist/monster-proj/
           server-dir: /glitchitsystem.com/public_html/monster/
           protocol: ftp
-          log-level: verbose
+          log-level: standard
           dangerous-clean-slate: true # This will remove old files
           timeout: 30000
           port: 21 # Specify default FTP port explicitly
