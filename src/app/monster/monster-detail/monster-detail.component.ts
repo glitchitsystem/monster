@@ -1,35 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
-import { Monster } from '../monster.model';
-import { MonsterService } from '../monster.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Monster } from "../monster.model";
+import { MonsterService } from "../monster.service";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 
 @Component({
-  selector: 'app-monster-detail',
-  templateUrl: './monster-detail.component.html',
-  styleUrls: ['./monster-detail.component.css']
+  selector: "app-monster-detail",
+  templateUrl: "./monster-detail.component.html",
+  styleUrls: ["./monster-detail.component.css"],
 })
 export class MonsterDetailComponent implements OnInit {
   monster: Monster;
-  id: number
+  id: number;
 
-  constructor(private monsterService: MonsterService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private monsterService: MonsterService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.route.params.subscribe(
-      (params: Params) => {
-        this.id = +params['id']
-        this.monster = this.monsterService.getMonster(this.id)
-      }
-    )
+    this.route.params.subscribe((params: Params) => {
+      this.id = +params["id"];
+      this.monster = this.monsterService.getMonster(this.id);
+    });
   }
 
   onEditMonster() {
-    this.router.navigate(['edit'], {relativeTo: this.route})
+    this.router.navigate(["edit"], { relativeTo: this.route });
   }
 
   onDeleteMonster() {
-    this.monsterService.deleteMonster(this.id)
-    this.router.navigate(['/mine'])
+    this.monsterService.deleteMonster(this.id);
+    this.router.navigate(["/mine"]);
+  }
+
+  onToggleFavorite() {
+    this.monsterService.toggleFavorite(this.id);
+    this.monster = this.monsterService.getMonster(this.id);
   }
 }

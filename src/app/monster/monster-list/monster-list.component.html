@@ -1,23 +1,102 @@
 <div class="row">
   <div class="col-xs-12">
-    <button class="btn btn-success" (click)="onNewMonster()">New Monster</button>
-    <button class="btn btn-success" (click)="onRandomMonster()">Random Monster</button>
-    <button class="btn btn-success" (click)="onRemoveAll()">Remove All Monsters</button>
+    <button class="btn btn-success" (click)="onNewMonster()">
+      New Monster
+    </button>
+    <button class="btn btn-success" (click)="onRandomMonster()">
+      Random Monster
+    </button>
+    <button class="btn btn-danger" (click)="onRemoveAll()">
+      Remove All Monsters
+    </button>
+    <button class="btn btn-default" (click)="onExport()">Export JSON</button>
+    <label class="btn btn-default" style="margin-left: 6px">
+      Import JSON
+      <input
+        type="file"
+        accept="application/json"
+        (change)="onImportFileChange($event)"
+        style="display: none"
+      />
+    </label>
   </div>
-  <div class="col-xs-12">
-      <button class="btn btn-success" (click)="onUnfavoriteAll()">Unfavorite All</button>
-      <button class="btn btn-success" (click)="onCreateTeam()">Create Random Monster Team</button>
-      <button class="btn btn-success" (click)="onSort()">Sort Monsters</button>
-    </div>
+  <div class="col-xs-12" style="margin-top: 8px">
+    <button class="btn btn-warning" (click)="onUnfavoriteAll()">
+      Unfavorite All
+    </button>
+    <button class="btn btn-info" (click)="onCreateTeam()">
+      Create Random Team
+    </button>
+  </div>
 </div>
-<hr>
-<p>Number of monsters: {{ monsters.length }}</p>
+<hr />
+<div class="row" style="margin-bottom: 8px">
+  <div class="col-sm-4">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search by name..."
+      [(ngModel)]="searchTerm"
+      (input)="onSearchChange()"
+    />
+  </div>
+  <div class="col-sm-3">
+    <select
+      class="form-control"
+      [(ngModel)]="selectedRole"
+      (change)="onRoleChange()"
+    >
+      <option value="all">All roles</option>
+      <option value="soldier">Soldier</option>
+      <option value="medic">Medic</option>
+      <option value="shield">Shield</option>
+      <option value="thief">Thief</option>
+      <option value="mage">Mage</option>
+    </select>
+  </div>
+  <div class="col-sm-3">
+    <select
+      class="form-control"
+      [(ngModel)]="sortOption"
+      (change)="onSortChange()"
+    >
+      <option value="name-asc">Sort: Name A→Z</option>
+      <option value="name-desc">Sort: Name Z→A</option>
+      <option value="role-asc">Sort: Role</option>
+    </select>
+  </div>
+  <div class="col-sm-2" style="padding-top: 6px">
+    <label
+      ><input
+        type="checkbox"
+        [(ngModel)]="favoritesOnly"
+        (change)="onFavoritesToggle()"
+      />
+      Favorites only</label
+    >
+  </div>
+</div>
+<div class="row" style="margin-bottom: 8px">
+  <div class="col-xs-12">
+    <span class="badge">Soldier: {{ roleCounts.soldier }}</span>
+    <span class="badge">Medic: {{ roleCounts.medic }}</span>
+    <span class="badge">Shield: {{ roleCounts.shield }}</span>
+    <span class="badge">Thief: {{ roleCounts.thief }}</span>
+    <span class="badge">Mage: {{ roleCounts.mage }}</span>
+    <span class="badge" style="background: #337ab7"
+      >Filtered: {{ viewMonsters?.length || 0 }}</span
+    >
+    <span class="badge" style="background: #5cb85c"
+      >Total: {{ monsters?.length || 0 }}</span
+    >
+  </div>
+</div>
 <div class="row">
   <div class="col-xs-12">
     <app-monster-item
-      *ngFor="let monsterEl of monsters; let i = index"
+      *ngFor="let monsterEl of viewMonsters; let i = index"
       [monster]="monsterEl"
-      [index]="i"></app-monster-item>
+      [index]="monsters.indexOf(monsterEl)"
+    ></app-monster-item>
   </div>
 </div>
-
