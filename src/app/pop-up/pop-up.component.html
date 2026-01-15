@@ -1,13 +1,27 @@
-<p>{{ data?.message }}</p>
-<div class="row">
-  <div class="col-xs-6">
-    <button class="btn-lg btn-danger btn-block" [mat-dialog-close]="true">
-      YES
-    </button>
-  </div>
-  <div class="col-xs-6">
-    <button class="btn-lg btn-success btn-block" [mat-dialog-close]="false">
-      NO
-    </button>
+<div
+  role="alertdialog"
+  aria-labelledby="dialog-title"
+  aria-describedby="dialog-message"
+>
+  <p id="dialog-message">{{ data?.message }}</p>
+  <div class="row">
+    <div class="col-xs-6">
+      <button
+        class="btn-lg btn-danger btn-block"
+        [mat-dialog-close]="true"
+        aria-label="Confirm action"
+      >
+        YES
+      </button>
+    </div>
+    <div class="col-xs-6">
+      <button
+        class="btn-lg btn-success btn-block"
+        [mat-dialog-close]="false"
+        aria-label="Cancel action"
+      >
+        NO
+      </button>
+    </div>
   </div>
 </div>

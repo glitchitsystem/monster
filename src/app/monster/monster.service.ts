@@ -66,6 +66,20 @@ export class MonsterService {
       });
   }
 
+  duplicateMonster(index: number): Monster {
+    const original = this.monsters[index];
+    if (!original) return null;
+
+    let newName = `Copy of ${original.name}`;
+    let counter = 1;
+    while (this.isNameTaken(newName)) {
+      counter++;
+      newName = `Copy of ${original.name} ${counter}`;
+    }
+
+    return new Monster(newName, original.description, false, original.role);
+  }
+
   toggleFavorite(index: number) {
     const m = this.monsters[index];
     if (!m) return;

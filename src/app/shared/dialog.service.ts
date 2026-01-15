@@ -14,6 +14,8 @@ export class DialogService {
       disableClose: true,
       panelClass: "confirm-dialog-container",
       data: { message },
+      autoFocus: true,
+      restoreFocus: true,
     });
   }
 }

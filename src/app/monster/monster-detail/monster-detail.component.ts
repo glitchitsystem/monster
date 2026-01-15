@@ -27,12 +27,23 @@ export class MonsterDetailComponent implements OnInit {
   }
 
   onEditMonster() {
-    this.router.navigate(["edit"], { relativeTo: this.route });
+    this.router.navigate(["edit"], {
+      relativeTo: this.route,
+      queryParamsHandling: "preserve",
+    });
+  }
+
+  onDuplicateMonster() {
+    this.router.navigate([this.id, "edit"], {
+      relativeTo: this.route.parent,
+      queryParams: { duplicate: "true" },
+      queryParamsHandling: "merge",
+    });
   }
 
   onDeleteMonster() {
     this.monsterService.deleteMonster(this.id);
-    this.router.navigate(["/mine"]);
+    this.router.navigate(["/mine"], { queryParamsHandling: "preserve" });
   }
 
   onToggleFavorite() {

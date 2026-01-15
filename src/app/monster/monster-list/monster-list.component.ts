@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  HostListener,
+  ViewChild,
+  ElementRef,
+} from "@angular/core";
 
 import { Monster } from "../monster.model";
 import { MonsterService } from "../monster.service";
@@ -21,6 +28,15 @@ export class MonsterListComponent implements OnInit, OnDestroy {
   sortOption: "name-asc" | "name-desc" | "role-asc" = "name-asc";
   roleCounts = { soldier: 0, medic: 0, shield: 0, thief: 0, mage: 0 };
 
+  // Pagination
+  currentPage = 1;
+  pageSize = 10;
+  pagedMonsters: Monster[] = [];
+  totalPages = 0;
+  Math = Math; // Expose Math to template
+
+  @ViewChild("listHeader") listHeader: ElementRef;
+
   constructor(
     private monsterService: MonsterService,
     private router: Router,
@@ -29,6 +45,16 @@ export class MonsterListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // Load state from query params
+    this.route.queryParams.subscribe((params) => {
+      this.searchTerm = params["search"] || "";
+      this.selectedRole = params["role"] || "all";
+      this.favoritesOnly = params["favorites"] === "true";
+      this.sortOption = params["sort"] || "name-asc";
+      this.currentPage = parseInt(params["page"]) || 1;
+      this.applyFilters();
+    });
+
     this.subscription = this.monsterService.monstersChanged.subscribe(
       (monsters: Monster[]) => {
         this.monsters = monsters;
@@ -42,12 +68,16 @@ export class MonsterListComponent implements OnInit, OnDestroy {
   }
 
   onNewMonster() {
-    this.router.navigate(["new"], { relativeTo: this.route });
+    this.router.navigate(["new"], {
+      relativeTo: this.route,
+      queryParamsHandling: "preserve",
+    });
   }
 
   onRandomMonster() {
     this.monsterService.addRandomMonster();
     this.onClickedButton();
+    setTimeout(() => this.focusOnListHeader(), 100);
   }
 
   onRemoveAll() {
@@ -58,6 +88,7 @@ export class MonsterListComponent implements OnInit, OnDestroy {
         if (res) {
           this.monsterService.removeAll();
           this.onClickedButton();
+          setTimeout(() => this.focusOnListHeader(), 100);
         }
       });
   }
@@ -70,6 +101,7 @@ export class MonsterListComponent implements OnInit, OnDestroy {
   onCreateTeam() {
     this.monsterService.createRandomTeam();
     this.onClickedButton();
+    setTimeout(() => this.focusOnListHeader(), 100);
   }
 
   onSort() {
@@ -85,16 +117,38 @@ export class MonsterListComponent implements OnInit, OnDestroy {
   }
 
   onSearchChange() {
+    this.currentPage = 1;
+    this.updateQueryParams();
     this.applyFilters();
   }
   onRoleChange() {
+    this.currentPage = 1;
+    this.updateQueryParams();
     this.applyFilters();
   }
   onFavoritesToggle() {
+    this.currentPage = 1;
+    this.updateQueryParams();
     this.applyFilters();
   }
   onSortChange() {
+    this.currentPage = 1;
+    this.updateQueryParams();
     this.applyFilters();
+  }
+
+  private updateQueryParams() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        search: this.searchTerm || null,
+        role: this.selectedRole !== "all" ? this.selectedRole : null,
+        favorites: this.favoritesOnly ? "true" : null,
+        sort: this.sortOption !== "name-asc" ? this.sortOption : null,
+        page: this.currentPage > 1 ? this.currentPage : null,
+      },
+      queryParamsHandling: "merge",
+    });
   }
 
   private updateRoleCounts() {
@@ -127,6 +181,83 @@ export class MonsterListComponent implements OnInit, OnDestroy {
       return 0;
     });
     this.viewMonsters = list;
+    this.updatePagination();
+  }
+
+  private updatePagination() {
+    this.totalPages = Math.ceil(this.viewMonsters.length / this.pageSize);
+    if (this.currentPage > this.totalPages && this.totalPages > 0) {
+      this.currentPage = this.totalPages;
+    }
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.pagedMonsters = this.viewMonsters.slice(start, end);
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.updateQueryParams();
+    this.updatePagination();
+  }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  @HostListener("window:keydown", ["$event"])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    // Ignore if user is typing in an input
+    const target = event.target as HTMLElement;
+    if (
+      target.tagName === "INPUT" ||
+      target.tagName === "TEXTAREA" ||
+      target.tagName === "SELECT" ||
+      target.isContentEditable
+    ) {
+      return;
+    }
+
+    const key = event.key.toLowerCase();
+    switch (key) {
+      case "n":
+        event.preventDefault();
+        this.onNewMonster();
+        break;
+      case "r":
+        event.preventDefault();
+        this.onRandomMonster();
+        break;
+      case "t":
+        event.preventDefault();
+        this.onCreateTeam();
+        break;
+      case "s":
+        event.preventDefault();
+        this.cycleSortOption();
+        break;
+      case "f":
+        event.preventDefault();
+        this.favoritesOnly = !this.favoritesOnly;
+        this.onFavoritesToggle();
+        break;
+    }
+  }
+
+  private cycleSortOption() {
+    const options: Array<"name-asc" | "name-desc" | "role-asc"> = [
+      "name-asc",
+      "name-desc",
+      "role-asc",
+    ];
+    const currentIndex = options.indexOf(this.sortOption);
+    this.sortOption = options[(currentIndex + 1) % options.length];
+    this.onSortChange();
+  }
+
+  private focusOnListHeader() {
+    if (this.listHeader && this.listHeader.nativeElement) {
+      this.listHeader.nativeElement.focus();
+    }
   }
 
   onExport() {
