@@ -1,31 +1,51 @@
-import { Router, ActivatedRoute } from '@angular/router';
-import { Injectable } from '@angular/core';
+import { Router } from "@angular/router";
+import { Injectable } from "@angular/core";
 
 @Injectable()
 export class AuthService {
-    validLogin = true
-    loggedIn = false
+  validLogin = true;
+  loggedIn = false;
 
-    constructor(private router: Router, private route: ActivatedRoute) { }
+  private STORAGE_KEY = "auth_logged_in";
 
-    loginUser(username: string, password: string) {
-        if (username == 'bob@bob.com' && password == 'Test123') {
-            this.loggedIn = true
-            this.validLogin = true
-            this.router.navigate(['../mine'], { relativeTo: this.route })
-        } else {
-            this.validLogin = false
-            return this.validLogin
-        }
+  constructor(private router: Router) {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      this.loggedIn = raw === "true";
+    } catch (e) {
+      this.loggedIn = false;
     }
+  }
 
-    isAuthenticated() {
-        return this.loggedIn
+  loginUser(username: string, password: string): boolean {
+    if (username === "bob@bob.com" && password === "Test123") {
+      this.loggedIn = true;
+      this.validLogin = true;
+      try {
+        localStorage.setItem(this.STORAGE_KEY, "true");
+      } catch {}
+      this.router.navigate(["/mine"]);
+      return true;
+    } else {
+      this.validLogin = false;
+      this.loggedIn = false;
+      try {
+        localStorage.removeItem(this.STORAGE_KEY);
+      } catch {}
+      return false;
     }
+  }
 
-    logout() {
-        this.loggedIn = false
-        this.router.navigate(['../'], { relativeTo: this.route })
-        return this.loggedIn
-    }
+  isAuthenticated() {
+    return this.loggedIn;
+  }
+
+  logout() {
+    this.loggedIn = false;
+    try {
+      localStorage.removeItem(this.STORAGE_KEY);
+    } catch {}
+    this.router.navigate(["/"]);
+    return this.loggedIn;
+  }
 }
