@@ -1,71 +1,12 @@
-<a
-  style="cursor: pointer"
-  [routerLink]="[index]"
-  routerLinkActive="active"
-  class="list-group-item clearfix"
-  [attr.aria-label]="'View details for ' + monster.name + ', ' + monster.role"
->
+<a style="cursor: pointer" [routerLink]="[index]" routerLinkActive="active" class="list-group-item clearfix">
   <div class="pull-left">
     <h4 class="list-group-item-heading">{{ monster.name }}</h4>
     <p class="list-group-item-text">{{ monster.description }}</p>
   </div>
-  <span
-    class="glyphicon glyphicon-heart pull-right hearted"
-    aria-hidden="true"
-    *ngIf="monster.favorite"
-    (click)="onToggleFavorite($event)"
-    [attr.aria-label]="'Unfavorite ' + monster.name"
-    role="button"
-    tabindex="0"
-  ></span>
-  <span
-    class="glyphicon glyphicon-heart-empty pull-right"
-    aria-hidden="true"
-    *ngIf="!monster.favorite"
-    (click)="onToggleFavorite($event)"
-    [attr.aria-label]="'Favorite ' + monster.name"
-    role="button"
-    tabindex="0"
-  ></span>
-  <span
-    class="glyphicon glyphicon-duplicate pull-right"
-    aria-hidden="true"
-    (click)="onDuplicate($event)"
-    style="margin-right: 8px; cursor: pointer"
-    title="Duplicate"
-    [attr.aria-label]="'Duplicate ' + monster.name"
-    role="button"
-    tabindex="0"
-  ></span>
-  <span
-    class="glyphicon ra ra-sword pull-right role"
-    aria-hidden="true"
-    *ngIf="monster.role === 'soldier'"
-    title="Soldier"
-  ></span>
-  <span
-    class="glyphicon ra ra-health pull-right role"
-    aria-hidden="true"
-    *ngIf="monster.role === 'medic'"
-    title="Medic"
-  ></span>
-  <span
-    class="glyphicon ra ra-cracked-shield pull-right role"
-    aria-hidden="true"
-    *ngIf="monster.role === 'shield'"
-    title="Shield"
-  ></span>
-  <span
-    class="glyphicon ra ra-kunai pull-right role"
-    aria-hidden="true"
-    *ngIf="monster.role === 'thief'"
-    title="Thief"
-  ></span>
-  <span
-    class="glyphicon ra ra-laser-blast pull-right role"
-    aria-hidden="true"
-    *ngIf="monster.role === 'mage'"
-    title="Mage"
-  ></span>
-  <span class="sr-only">{{ monster.role }}</span>
+  <span class="glyphicon glyphicon-heart pull-right hearted" aria-hidden="true" *ngIf="monster.favorite"></span>
+  <span class="glyphicon ra ra-sword pull-right role" aria-hidden="true" *ngIf="monster.role === 'soldier'"></span>
+  <span class="glyphicon ra ra-health pull-right role" aria-hidden="true" *ngIf="monster.role === 'medic'"></span>
+  <span class="glyphicon ra ra-cracked-shield pull-right role" aria-hidden="true" *ngIf="monster.role === 'shield'"></span>
+  <span class="glyphicon ra ra-kunai pull-right role" aria-hidden="true" *ngIf="monster.role === 'thief'"></span>
+  <span class="glyphicon ra ra-laser-blast pull-right role" aria-hidden="true" *ngIf="monster.role === 'mage'"></span>
 </a>

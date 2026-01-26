@@ -1,203 +1,23 @@
 <div class="row">
   <div class="col-xs-12">
-    <button
-      class="btn btn-success"
-      (click)="onNewMonster()"
-      aria-label="Create a new monster"
-    >
-      New Monster <kbd>N</kbd>
-    </button>
-    <button
-      class="btn btn-success"
-      (click)="onRandomMonster()"
-      aria-label="Add a random monster"
-    >
-      Random Monster <kbd>R</kbd>
-    </button>
-    <button
-      class="btn btn-danger"
-      (click)="onRemoveAll()"
-      aria-label="Remove all monsters"
-    >
-      Remove All Monsters
-    </button>
-    <button
-      class="btn btn-default"
-      (click)="onExport()"
-      aria-label="Export monsters to JSON file"
-    >
-      Export JSON
-    </button>
-    <label
-      class="btn btn-default"
-      style="margin-left: 6px"
-      aria-label="Import monsters from JSON file"
-    >
-      Import JSON
-      <input
-        type="file"
-        accept="application/json"
-        (change)="onImportFileChange($event)"
-        style="display: none"
-        aria-label="Select JSON file to import"
-      />
-    </label>
+    <button class="btn btn-success" (click)="onNewMonster()">New Monster</button>
+    <button class="btn btn-success" (click)="onRandomMonster()">Random Monster</button>
+    <button class="btn btn-success" (click)="onRemoveAll()">Remove All Monsters</button>
   </div>
-  <div class="col-xs-12" style="margin-top: 8px">
-    <button
-      class="btn btn-warning"
-      (click)="onUnfavoriteAll()"
-      aria-label="Unfavorite all monsters"
-    >
-      Unfavorite All
-    </button>
-    <button
-      class="btn btn-info"
-      (click)="onCreateTeam()"
-      aria-label="Create a random team of 5 monsters"
-    >
-      Create Random Team <kbd>T</kbd>
-    </button>
-  </div>
-</div>
-<hr />
-<div class="row" style="margin-bottom: 8px">
-  <div class="col-sm-4">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Search by name..."
-      [(ngModel)]="searchTerm"
-      (input)="onSearchChange()"
-      aria-label="Search monsters by name"
-    />
-  </div>
-  <div class="col-sm-3">
-    <select
-      class="form-control"
-      [(ngModel)]="selectedRole"
-      (change)="onRoleChange()"
-      aria-label="Filter monsters by role"
-    >
-      <option value="all">All roles</option>
-      <option value="soldier">Soldier</option>
-      <option value="medic">Medic</option>
-      <option value="shield">Shield</option>
-      <option value="thief">Thief</option>
-      <option value="mage">Mage</option>
-    </select>
-  </div>
-  <div class="col-sm-3">
-    <select
-      class="form-control"
-      [(ngModel)]="sortOption"
-      (change)="onSortChange()"
-      title="Press S to cycle sort options"
-      aria-label="Sort monsters"
-    >
-      <option value="name-asc">Sort: Name A→Z <kbd>S</kbd></option>
-      <option value="name-desc">Sort: Name Z→A</option>
-      <option value="role-asc">Sort: Role</option>
-    </select>
-  </div>
-  <div class="col-sm-2" style="padding-top: 6px">
-    <label
-      ><input
-        type="checkbox"
-        [(ngModel)]="favoritesOnly"
-        (change)="onFavoritesToggle()"
-        aria-label="Show only favorite monsters"
-      />
-      Favorites <kbd>F</kbd></label
-    >
-  </div>
-</div>
-<div class="row" style="margin-bottom: 8px">
   <div class="col-xs-12">
-    <span class="badge">Soldier: {{ roleCounts.soldier }}</span>
-    <span class="badge">Medic: {{ roleCounts.medic }}</span>
-    <span class="badge">Shield: {{ roleCounts.shield }}</span>
-    <span class="badge">Thief: {{ roleCounts.thief }}</span>
-    <span class="badge">Mage: {{ roleCounts.mage }}</span>
-    <span class="badge" style="background: #337ab7"
-      >Filtered: {{ viewMonsters?.length || 0 }}</span
-    >
-    <span class="badge" style="background: #5cb85c"
-      >Total: {{ monsters?.length || 0 }}</span
-    >
-  </div>
+      <button class="btn btn-success" (click)="onUnfavoriteAll()">Unfavorite All</button>
+      <button class="btn btn-success" (click)="onCreateTeam()">Create Random Monster Team</button>
+      <button class="btn btn-success" (click)="onSort()">Sort Monsters</button>
+    </div>
 </div>
+<hr>
+<p>Number of monsters: {{ monsters.length }}</p>
 <div class="row">
   <div class="col-xs-12">
-    <h2
-      #listHeader
-      tabindex="-1"
-      style="
-        border: 0;
-        clip: rect(0 0 0 0);
-        height: 1px;
-        margin: -1px;
-        overflow: hidden;
-        padding: 0;
-        position: absolute;
-        width: 1px;
-      "
-    >
-      Monster List
-    </h2>
     <app-monster-item
-      *ngFor="let monsterEl of pagedMonsters; let i = index"
+      *ngFor="let monsterEl of monsters; let i = index"
       [monster]="monsterEl"
-      [index]="monsters.indexOf(monsterEl)"
-    ></app-monster-item>
+      [index]="i"></app-monster-item>
   </div>
 </div>
 
-<!-- Pagination Controls -->
-<div
-  class="row"
-  *ngIf="viewMonsters?.length > pageSize"
-  style="margin-top: 16px"
->
-  <div class="col-xs-12 text-center">
-    <nav aria-label="Monster list pagination">
-      <ul class="pagination" style="margin: 0">
-        <li [class.disabled]="currentPage === 1">
-          <a
-            style="cursor: pointer"
-            (click)="currentPage > 1 && onPageChange(currentPage - 1)"
-            aria-label="Previous page"
-          >
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li
-          *ngFor="let page of pageNumbers"
-          [class.active]="page === currentPage"
-        >
-          <a
-            style="cursor: pointer"
-            (click)="onPageChange(page)"
-            [attr.aria-label]="'Go to page ' + page"
-            [attr.aria-current]="page === currentPage ? 'page' : null"
-            >{{ page }}</a
-          >
-        </li>
-        <li [class.disabled]="currentPage === totalPages">
-          <a
-            style="cursor: pointer"
-            (click)="currentPage < totalPages && onPageChange(currentPage + 1)"
-            aria-label="Next page"
-          >
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-    <p style="margin-top: 8px; color: #777" aria-live="polite">
-      Showing {{ (currentPage - 1) * pageSize + 1 }} -
-      {{ Math.min(currentPage * pageSize, viewMonsters.length) }}
-      of {{ viewMonsters.length }}
-    </p>
-  </div>
-</div>
