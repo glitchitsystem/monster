@@ -21,7 +21,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Build Angular app
-        run: npm run build -- --configuration production --base-href /monster/
+        run: npm run build -- --configuration production
 
       - name: Set build timestamp
         run: echo "BUILD_TIMESTAMP=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_ENV
